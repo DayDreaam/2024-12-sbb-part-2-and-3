@@ -4,6 +4,7 @@ package com.mysite.sbb.domain.answer;
 import com.mysite.sbb.global.exception.DataNotFoundException;
 import com.mysite.sbb.domain.question.Question;
 import com.mysite.sbb.domain.user.SiteUser;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,5 +55,13 @@ public class AnswerService {
     public Page<Answer> answerPage(Question question, int page){
         Pageable pageable = PageRequest.of(page,10);
         return answerRepository.findAllByQuestion(question,pageable);
+    }
+
+    public List<Answer> recentAnswer() {
+        return answerRepository.findTop10ByOrderByCreateDate();
+    }
+
+    public long count() {
+        return answerRepository.count();
     }
 }

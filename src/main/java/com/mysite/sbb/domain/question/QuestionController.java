@@ -5,6 +5,8 @@ import com.mysite.sbb.domain.answer.AnswerForm;
 import com.mysite.sbb.domain.answer.AnswerService;
 import com.mysite.sbb.domain.category.Category;
 import com.mysite.sbb.domain.category.CategoryService;
+import com.mysite.sbb.domain.comment.Comment;
+import com.mysite.sbb.domain.comment.CommentService;
 import com.mysite.sbb.domain.user.SiteUser;
 import com.mysite.sbb.domain.user.UserService;
 import jakarta.validation.Valid;
@@ -33,6 +35,7 @@ public class QuestionController {
     private final UserService userService;
     private final AnswerService answerService;
     private final CategoryService categoryService;
+    private final CommentService commentService;
 
     @GetMapping("/list")
     public String list(Model model,
@@ -50,6 +53,10 @@ public class QuestionController {
         model.addAttribute("paging",paging);
         model.addAttribute(kw);
         model.addAttribute("categoryId", categoryId);
+        List<Answer> recentAnswers = answerService.recentAnswer();
+        model.addAttribute("recentAnswers",recentAnswers);
+        List<Comment> recentComments = commentService.recentComment();
+        model.addAttribute("recentComments",recentComments);
         return "question_list";
     }
 

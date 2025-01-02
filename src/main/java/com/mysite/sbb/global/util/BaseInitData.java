@@ -30,6 +30,7 @@ public class BaseInitData {
             self.initCategory();
             self.initUser();
             self.initQuestion();
+            self.initAnswer();
         };
     }
 
@@ -60,10 +61,19 @@ public class BaseInitData {
             return;
         }
         for(int i=0;i<100;i++){
-            questionService.create(String.format("sexy한 석원과 수학 데이트 %d",i+1),"대충 강의내용",userService.getUser("한석원"),categoryService.findById(2));
+            questionService.create(String.format("한석원과 수학 데이트 %d",i+1),"대충 강의내용",userService.getUser("한석원"),categoryService.findById(2));
         }
         questionService.create("스프링부트 질문","계속 연습해보고는 있지만 아직 어렵네요.",userService.getUser("지식인123"),categoryService.findById(1));
-        questionService.create("젠장 에이스 이 공격은 대체 뭐냐","몸이 달아오르고 있잖아",userService.getUser("검은수염"),categoryService.findById(3));
+        questionService.create("제하하하하하","이 공격은 대체 뭐냐 에이스",userService.getUser("검은수염"),categoryService.findById(3));
+    }
+
+    @Transactional
+    public void initAnswer() {
+        if(answerService.count()>0){
+            return;
+        }
+        answerService.create(questionService.getQuestion(101),"어려울만함",userService.getUser("검은수염"));
+        answerService.create(questionService.getQuestion(101),"공부가 어렵다면 내 강의를 봐라",userService.getUser("한석원"));
     }
 
 }

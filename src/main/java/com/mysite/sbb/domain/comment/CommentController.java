@@ -52,12 +52,9 @@ public class CommentController {
         if(bindingResult.hasErrors()){
             return "redirect:/question/detail/%s".formatted(qid);
         }
-        if(!principal.getName().equals(answer.getAuthor().getUsername())){
-            return "redirect:/question/detail/%s".formatted(qid);
-        }
         SiteUser siteUser = userService.getUser(principal.getName());
         commentService.makeAnswerComment(siteUser,answer,commentForm.getContent());
-        return "redirect:/question/detail/%s".formatted(qid);
+        return String.format("redirect:/question/detail/%s#answer_%s",qid,answer.getId());
     }
 
     private Integer findQuestionId(Comment comment){

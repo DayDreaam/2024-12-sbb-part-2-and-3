@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout}" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content" class="container my-3">
     <div class="row my-3">
         <div class="col-6">
@@ -76,6 +76,58 @@
         <input type="hidden" id="kw" name="kw" th:value="${kw}">
         <input type="hidden" id="page" name="page" th:value="${paging.number}">
     </form>
+
+    <div style="font-weight: bold; font-size: 24px;">최신 답변</div>
+    <table class = "table">
+        <thead>
+        <tr>
+            <th>질문</th>
+            <th>답변</th>
+            <th>작성자</th>
+            <th>날짜</th>
+            <th>코멘트</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="answer : ${recentAnswers}">
+            <td>
+                <a th:href="@{|/question/detail/${answer.question.id}|}" th:text="${answer.question.subject}"></a>
+            </td>
+            <td>
+                <a th:href="@{|/question/detail/${answer.question.id}#answer_${answer.id}|}" th:text="${answer.content}"></a>
+            </td>
+            <td th:text="${answer.author.username}"></td>
+            <td th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#lists.size(answer.commentList)}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div style="font-weight: bold; font-size: 24px;">최신 댓글</div>
+    <table class = "table">
+        <thead>
+        <tr>
+            <th>질문</th>
+            <th>답변</th>
+            <th>내용</th>
+            <th>작성자</th>
+            <th>날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="comment : ${recentComments}">
+            <td th:text="${comment.question.subject}"></td>
+            <td th:text="${comment.answer != null ? comment.answer.content : ''}"></td>
+            <td>
+                <a th:href="${comment.answer != null ? '/question/detail/' + comment.question.id + '#answer_' + comment.answer.id : '/question/detail/' + comment.question.id}">
+                    <span th:text="${comment.content}"></span>
+                </a>
+            </td>
+            <td th:text="${comment.author.username}"></td>
+            <td th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <script layout:fragment="script" type='text/javascript'>
     const page_elements = document.getElementsByClassName("page-link");

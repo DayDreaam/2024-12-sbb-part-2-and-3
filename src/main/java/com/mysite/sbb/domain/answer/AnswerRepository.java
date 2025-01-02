@@ -1,6 +1,7 @@
 package com.mysite.sbb.domain.answer;
 
 import com.mysite.sbb.domain.question.Question;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer> {
             a.createDate DESC
             """)
     Page<Answer> findAllByQuestion(@Param("question") Question question, Pageable pageable);
+
+
+    List<Answer> findTop10ByOrderByCreateDate();
 }

@@ -112,6 +112,7 @@ public class UserController {
             BindingResult bindingResult){
         SiteUser user = userService.findByUserId(id).orElseThrow(
                 ()-> new RuntimeException("잘못된 사용자입니다."));
+        userService.matchToken(user,token);
         if (!userPasswordResetForm.getPassword1().equals(userPasswordResetForm.getPassword2())) {
             bindingResult.rejectValue("password2", "error.password2", "비밀번호가 일치하지 않습니다.");
             return "password_reset";
